@@ -20,9 +20,7 @@ services:
       retries: 5
 
   api-gateway:
-    build:
-      context: ./backend
-      dockerfile: api-gateway/Dockerfile
+    image: bharat342002/api-gateway:latest
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -38,9 +36,7 @@ services:
       - payment-service
 
   auth-service:
-    build:
-      context: ./backend
-      dockerfile: auth-service/Dockerfile
+    image: bharat342002/auth-service:latest
     container_name: auth-service
     ports:
       - "8085:8085"
@@ -55,9 +51,7 @@ services:
         condition: service_healthy
 
   menu-service:
-    build:
-      context: ./backend
-      dockerfile: menu-service/Dockerfile
+    image: bharat342002/menu-service:latest
     container_name: menu-service
     ports:
       - "8082:8082"
@@ -72,9 +66,7 @@ services:
         condition: service_healthy
 
   order-service:
-    build:
-      context: ./backend
-      dockerfile: order-service/Dockerfile
+    image: bharat342002/order-service:latest
     container_name: order-service
     ports:
       - "8083:8083"
@@ -90,9 +82,7 @@ services:
         condition: service_healthy
 
   report-service:
-    build:
-      context: ./backend
-      dockerfile: report-service/Dockerfile
+    image: bharat342002/report-service:latest
     container_name: report-service
     ports:
       - "8084:8084"
@@ -108,9 +98,7 @@ services:
         condition: service_healthy
 
   payment-service:
-    build:
-      context: ./backend
-      dockerfile: payment-service/Dockerfile
+    image: bharat342002/payment-service:latest
     container_name: payment-service
     ports:
       - "8086:8086"
@@ -126,9 +114,7 @@ services:
         condition: service_healthy
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: bharat342002/cafeteria-frontend:latest
     container_name: cafeteria-frontend
     ports:
       - "80:80"

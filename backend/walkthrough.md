@@ -168,7 +168,7 @@ services:
       retries: 5
 
   api-gateway:
-    build: ./backend/api-gateway
+    image: bharat342002/api-gateway:latest
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -184,7 +184,7 @@ services:
       - payment-service
 
   auth-service:
-    build: ./backend/auth-service
+    image: bharat342002/auth-service:latest
     container_name: auth-service
     ports:
       - "8085:8085"
@@ -199,7 +199,7 @@ services:
         condition: service_healthy
 
   menu-service:
-    build: ./backend/menu-service
+    image: bharat342002/menu-service:latest
     container_name: menu-service
     ports:
       - "8082:8082"
@@ -214,7 +214,7 @@ services:
         condition: service_healthy
 
   order-service:
-    build: ./backend/order-service
+    image: bharat342002/order-service:latest
     container_name: order-service
     ports:
       - "8083:8083"
@@ -230,7 +230,7 @@ services:
         condition: service_healthy
 
   report-service:
-    build: ./backend/report-service
+    image: bharat342002/report-service:latest
     container_name: report-service
     ports:
       - "8084:8084"
@@ -246,7 +246,7 @@ services:
         condition: service_healthy
 
   payment-service:
-    build: ./backend/payment-service
+    image: bharat342002/payment-service:latest
     container_name: payment-service
     ports:
       - "8086:8086"
@@ -262,7 +262,7 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    image: bharat342002/cafeteria-frontend:latest
     container_name: cafeteria-frontend
     ports:
       - "80:80"
@@ -277,6 +277,7 @@ volumes:
 networks:
   cafeteria-network:
     driver: bridge
+```
 
 ### D. Production Environment Variables Override Checklist
 When deploying to cloud container registries, replace default variables with environment variables:
