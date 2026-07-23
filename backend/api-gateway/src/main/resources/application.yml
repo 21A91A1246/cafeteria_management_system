@@ -20,27 +20,27 @@ spring:
             allowCredentials: true
       routes:
         - id: auth-service
-          uri: http://localhost:8085
+          uri: ${SERVICES_AUTH_SERVICE_URL:http://localhost:8085}
           predicates:
             - Path=/api/auth/**
         
         - id: menu-service
-          uri: http://localhost:8082
+          uri: ${SERVICES_MENU_SERVICE_URL:http://localhost:8082}
           predicates:
             - Path=/api/menu/**
             
         - id: order-service
-          uri: http://localhost:8083
+          uri: ${SERVICES_ORDER_SERVICE_URL:http://localhost:8083}
           predicates:
             - Path=/api/orders/**
 
         - id: report-service
-          uri: http://localhost:8084
+          uri: ${SERVICES_REPORT_SERVICE_URL:http://localhost:8084}
           predicates:
             - Path=/api/reports/**
 
         - id: payment-service
-          uri: http://localhost:8086
+          uri: ${SERVICES_PAYMENT_SERVICE_URL:http://localhost:8086}
           predicates:
             - Path=/api/payments/**
 
