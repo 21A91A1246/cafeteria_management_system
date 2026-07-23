@@ -28,3 +28,7 @@ jobs:
     - name: Build Order Service
       run: |
         mvn -pl backend/order-service -am clean package
+
+    - name: Verify Generated JAR
+      run: |
+        ls -l backend/order-service/target

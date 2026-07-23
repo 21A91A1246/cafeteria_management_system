@@ -28,3 +28,7 @@ jobs:
     - name: Build Menu Service
       run: |
         mvn -pl backend/menu-service -am clean package
+
+    - name: Verify Generated JAR
+      run: |
+        ls -l backend/menu-service/target

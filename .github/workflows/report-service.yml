@@ -28,3 +28,7 @@ jobs:
     - name: Build Report Service
       run: |
         mvn -pl backend/report-service -am clean package
+
+    - name: Verify Generated JAR
+      run: |
+        ls -l backend/report-service/target

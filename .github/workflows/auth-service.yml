@@ -28,3 +28,7 @@ jobs:
     - name: Build Auth Service
       run: |
         mvn -pl backend/auth-service -am clean package
+
+    - name: Verify Generated JAR
+      run: |
+        ls -l backend/auth-service/target

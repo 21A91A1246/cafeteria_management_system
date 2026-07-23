@@ -28,3 +28,7 @@ jobs:
     - name: Build Payment Service
       run: |
         mvn -pl backend/payment-service -am clean package
+
+    - name: Verify Generated JAR
+      run: |
+        ls -l backend/payment-service/target
