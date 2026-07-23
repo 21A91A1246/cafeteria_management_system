@@ -9,10 +9,10 @@ COPY order-service ./order-service
 COPY report-service ./report-service
 COPY payment-service ./payment-service
 
-RUN mvn -f pom.xml -pl menu-service -am clean package -DskipTests
+RUN mvn -f pom.xml -pl payment-service -am clean package -DskipTests
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /app/menu-service/target/*.jar app.jar
-EXPOSE 8082
+COPY --from=build /app/payment-service/target/*.jar app.jar
+EXPOSE 8086
 ENTRYPOINT ["java", "-jar", "app.jar"]

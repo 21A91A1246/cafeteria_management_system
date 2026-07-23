@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+  # Shared MySQL Database container
+  mysql-db:
+    image: mysql:8.0
+    container_name: cafeteria-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - cafeteria-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    build:
+      context: ./backend
+      dockerfile: api-gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+    networks:
+      - cafeteria-network
+    depends_on:
+      - auth-service
+      - menu-service
+      - order-service
+      - report-service
+      - payment-service
+
+  auth-service:
+    build:
+      context: ./backend
+      dockerfile: auth-service/Dockerfile
+    container_name: auth-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/cafeteria_auth_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - cafeteria-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  menu-service:
+    build:
+      context: ./backend
+      dockerfile: menu-service/Dockerfile
+    container_name: menu-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/cafeteria_menu_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - cafeteria-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  order-service:
+    build:
+      context: ./backend
+      dockerfile: order-service/Dockerfile
+    container_name: order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/cafeteria_order_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SERVICES_MENU_SERVICE_URL=http://menu-service:8082
+    networks:
+      - cafeteria-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  report-service:
+    build:
+      context: ./backend
+      dockerfile: report-service/Dockerfile
+    container_name: report-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/cafeteria_report_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SERVICES_ORDER_SERVICE_URL=http://order-service:8083
+    networks:
+      - cafeteria-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  payment-service:
+    build:
+      context: ./backend
+      dockerfile: payment-service/Dockerfile
+    container_name: payment-service
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/cafeteria_payment_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SERVICES_ORDER_SERVICE_URL=http://order-service:8083
+    networks:
+      - cafeteria-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cafeteria-frontend
+    ports:
+      - "80:80"
+    networks:
+      - cafeteria-network
+    depends_on:
+      - api-gateway
+
+volumes:
+  mysql-data:
+
+networks:
+  cafeteria-network:
+    driver: bridge
