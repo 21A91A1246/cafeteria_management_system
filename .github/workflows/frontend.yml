@@ -1,4 +1,4 @@
-name: React Client CI
+name: React Client CI/CD
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,3 +36,14 @@ jobs:
       run: |
         cd frontend
         npm run build
+
+    - name: Log in to Docker Hub
+      if: github.event_name != 'pull_request'
+      run: |
+        echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build and Push Docker Image
+      if: github.event_name != 'pull_request'
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cafeteria-frontend:latest -f frontend/Dockerfile frontend
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/cafeteria-frontend:latest
