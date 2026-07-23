@@ -25,7 +25,6 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Build and Test Menu Service
+    - name: Build Menu Service
       run: |
-        # Build the menu-service module using the parent maven context
-        mvn -pl backend/menu-service -am clean test
+        mvn -pl backend/menu-service -am clean package

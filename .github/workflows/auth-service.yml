@@ -25,6 +25,6 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Build and Test Auth Service
+    - name: Build Auth Service
       run: |
-        mvn -pl backend/auth-service -am clean test
+        mvn -pl backend/auth-service -am clean package

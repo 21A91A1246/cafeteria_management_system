@@ -25,6 +25,6 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Build and Test Report Service
+    - name: Build Report Service
       run: |
-        mvn -pl backend/report-service -am clean test
+        mvn -pl backend/report-service -am clean package

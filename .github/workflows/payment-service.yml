@@ -25,6 +25,6 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Build and Test Payment Service
+    - name: Build Payment Service
       run: |
-        mvn -pl backend/payment-service -am clean test
+        mvn -pl backend/payment-service -am clean package

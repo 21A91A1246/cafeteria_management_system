@@ -27,4 +27,4 @@ jobs:
 
     - name: Build API Gateway
       run: |
-        mvn -pl backend/api-gateway -am clean test
+        mvn -pl backend/api-gateway -am clean package
