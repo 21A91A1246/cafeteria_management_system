@@ -2,13 +2,17 @@ name: API Gateway CI
 
 on:
   push:
+    branches: [ main ]
     paths:
       - 'backend/api-gateway/**'
       - 'backend/pom.xml'
+      - '.github/workflows/api-gateway.yml'
   pull_request:
+    branches: [ main ]
     paths:
       - 'backend/api-gateway/**'
       - 'backend/pom.xml'
+  workflow_dispatch:
 
 jobs:
   build:
