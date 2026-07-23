@@ -1,0 +1,60 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/cafeteria_order_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+
+# Service URL configurations
+services:
+  menu-service:
+    url: http://localhost:8082
+
+# Observability, Metrics & Health Probes
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,metrics,info
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4j Patterns Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      menuServiceCB:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50 # open if >=50% fail
+        waitDurationInOpenState: 10s # wait before trying again
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  retry:
+    instances:
+      menuServiceRetry:
+        maxAttempts: 3
+        waitDuration: 1s
+  ratelimiter:
+    instances:
+      orderRateLimiter:
+        limitForPeriod: 5 # 5 orders max
+        limitRefreshPeriod: 1m # per minute
+        timeoutDuration: 500ms
