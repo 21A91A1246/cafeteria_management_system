@@ -33,14 +33,8 @@ public class AuthService {
         employee.setName(request.getName());
         employee.setEmail(request.getEmail());
         employee.setDepartment(request.getDepartment());
-        // Default role is ROLE_EMPLOYEE unless specified as ROLE_ADMIN
-        String role = request.getRole();
-        if (role == null || role.trim().isEmpty()) {
-            role = "ROLE_EMPLOYEE";
-        } else if (!role.startsWith("ROLE_")) {
-            role = "ROLE_" + role.toUpperCase();
-        }
-        employee.setRole(role);
+        // Self-registered accounts are always standard employees. Admins are pre-seeded or promoted.
+        employee.setRole("ROLE_EMPLOYEE");
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
         Employee saved = employeeRepository.save(employee);

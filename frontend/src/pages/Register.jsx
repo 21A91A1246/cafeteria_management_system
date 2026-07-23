@@ -21,10 +21,7 @@ const departments = [
   'Administration'
 ];
 
-const roles = [
-  { value: 'ROLE_EMPLOYEE', label: 'Employee' },
-  { value: 'ROLE_ADMIN', label: 'Cafeteria Administrator' }
-];
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -32,7 +29,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [department, setDepartment] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('ROLE_EMPLOYEE');
+  const role = 'ROLE_EMPLOYEE';
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -223,41 +220,7 @@ const Register = () => {
               ))}
             </TextField>
 
-            <TextField
-              fullWidth
-              select
-              label="Security Role"
-              variant="outlined"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              sx={{
-                mb: 2,
-                '& .MuiOutlinedInput-root': {
-                  color: '#fff',
-                  '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.12)' },
-                  '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.25)' },
-                  '&.Mui-focused fieldset': { borderColor: '#f59e0b' },
-                },
-                '& .MuiInputLabel-root': { color: '#94a3b8' },
-                '& .MuiInputLabel-root.Mui-focused': { color: '#f59e0b' },
-                '& .MuiSvgIcon-root': { color: '#94a3b8' }
-              }}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <BadgeIcon sx={{ color: '#94a3b8', mr: 1 }} />
-                    </InputAdornment>
-                  ),
-                }
-              }}
-            >
-              {roles.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+
 
             <TextField
               fullWidth
